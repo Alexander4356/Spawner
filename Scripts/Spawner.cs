@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private Enemy _enemy;
     [SerializeField] private float _secondsBetweenSpawn;
     [SerializeField] private Transform[] _spawnPoints;
-    
+
+    private WaitForSeconds _pause;
+
+    private void Awake()
+    {
+        _pause = new WaitForSeconds(_secondsBetweenSpawn);
+    }
+
     private void Start()
     {
         StartCoroutine(SpawnEnemy());
@@ -19,8 +26,8 @@ public class Spawner : MonoBehaviour
         {
             for (int i = 0; i < _spawnPoints.Length; i++)
             {
-                Instantiate(_enemyPrefab, _spawnPoints[i]);
-                yield return new WaitForSeconds(_secondsBetweenSpawn);
+                Instantiate(_enemy, _spawnPoints[i]);
+                yield return _pause;
             }
         }
     }
